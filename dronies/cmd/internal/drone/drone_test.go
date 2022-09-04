@@ -67,7 +67,7 @@ func TestDrone_ScanEnemy(t *testing.T) {
 				Lon: tt.fields.Lon,
 			}
 			d.ScanEnemy()
-			for _, s := range d.Scans.Enemies {
+			for _, s := range d.Scans.Squad.Enemies {
 				want := tt.want().Enemies[0]
 				require.NotEqual(t, s.ID, want.ID)
 				fmt.Println(s.GetInfo())

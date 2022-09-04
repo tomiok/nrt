@@ -6,6 +6,13 @@ import (
 	"time"
 )
 
+var sf = sonyflake.NewSonyflake(sonyflake.Settings{
+	StartTime: time.Now(),
+	MachineID: func() (uint16, error) {
+		return 1, nil
+	},
+})
+
 type Drone struct {
 	ID  uint64
 	Lat float64
@@ -17,6 +24,18 @@ type Drone struct {
 type Scan struct {
 	ScanTime time.Time
 	Squad    Squad
+}
+
+type Position struct {
+	Lon float64 `json:"lon"`
+	Lat float64 `json:"lat"`
+}
+
+type Message struct {
+	DroneID  uint64   `json:"droneId"`
+	Position Position `json:"position"`
+	ScanAt   string   `json:"scanAt"`
+	Enemies  []Enemy  `json:"enemies"`
 }
 
 func DronesGeneration(c int) []Drone {
@@ -31,13 +50,6 @@ func DronesGeneration(c int) []Drone {
 	}
 	return drones
 }
-
-var sf = sonyflake.NewSonyflake(sonyflake.Settings{
-	StartTime: time.Now(),
-	MachineID: func() (uint16, error) {
-		return 1, nil
-	},
-})
 
 func createDrone() (Drone, error) {
 	id, err := sf.NextID()
@@ -76,5 +88,22 @@ func (d *Drone) ScanEnemy() {
 	d.Scans = Scan{
 		ScanTime: time.Now(),
 		Squad:    squad,
+	}
+}
+
+func (d *Drone) Read() Message {
+	droneID := d.ID
+	readAt := d.Scans.ScanTime.Format(time.ANSIC)
+	pos := Position{
+		Lon: d.Lon,
+		Lat: d.Lat,
+	}
+	enemies := d.Scans.Squad.Enemies
+
+	return Message{
+		DroneID:  droneID,
+		Position: pos,
+		ScanAt:   readAt,
+		Enemies:  enemies,
 	}
 }

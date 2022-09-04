@@ -2,27 +2,45 @@ package main
 
 import (
 	"dronies/cmd/internal/drone"
+	"github.com/nats-io/nats.go"
 	"log"
 	"time"
 )
 
-const maxDrones = 10
-
 func main() {
 	now := time.Now()
-	run()
+
+	deps, err := Deps()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	deps.Exec.Run()
+
 	log.Println(time.Since(now))
 }
 
-func run() error {
-	drones := drone.DronesGeneration(maxDrones)
+func Deps() (*deps, error) {
+	nc, err := nats.Connect(nats.DefaultURL)
 
-	ch := make(chan string)
-	go drone.DataAggregator(ch, drones)
-
-	for msg := range ch {
-		log.Println(".." + msg)
+	if err != nil {
+		return nil, err
 	}
 
-	return nil
+	sender := drone.Sender{
+		Conn: nc,
+	}
+
+	exec := drone.Executor{
+		Sender: &sender,
+	}
+
+	return &deps{
+		Exec: &exec,
+	}, nil
+}
+
+type deps struct {
+	Exec *drone.Executor
 }

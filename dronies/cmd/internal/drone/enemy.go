@@ -19,9 +19,9 @@ type Skill string
 
 // Enemy is the one in the other side.
 type Enemy struct {
-	ID     string
-	Energy int // means a % of damage.
-	Skill  Skill
+	ID     string `json:"id"`
+	Energy int    `json:"energy"` // means a % of damage.
+	Skill  Skill  `json:"skill"`
 }
 
 // Squad is simply a list of enemies.
