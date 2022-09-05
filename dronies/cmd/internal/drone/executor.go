@@ -20,7 +20,7 @@ func (e *Executor) Run() {
 
 	var i int
 	for msg := range ch {
-		err := e.Sender.SendMessage("enemies", msg)
+		err := e.Sender.SendMessage("enemies_1", msg)
 		if err != nil {
 			log.Println(err)
 		}

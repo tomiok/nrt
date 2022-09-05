@@ -74,9 +74,9 @@ var random = rand.New(rand.NewSource(time.Now().Unix()))
 
 func (d *Drone) ScanEnemy() {
 	var squad Squad
-	enemies := make([]Enemy, 0, 100)
+	enemies := make([]Enemy, 0, 10)
 
-	var randEnemies = random.Intn(110)
+	var randEnemies = random.Intn(10)
 	for i := 0; i < randEnemies; i++ {
 		enemies = append(enemies, Enemy{
 			ID:     generateID(),

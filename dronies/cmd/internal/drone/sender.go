@@ -1,9 +1,9 @@
 package drone
 
 import (
-	"bytes"
-	"encoding/gob"
+	"encoding/json"
 	"github.com/nats-io/nats.go"
+	"log"
 )
 
 type Sender struct {
@@ -11,21 +11,15 @@ type Sender struct {
 }
 
 func (s *Sender) SendMessage(subject string, msg Message) error {
-	b, err := encode(msg)
+	b, err := encodeJson(msg)
 
 	if err != nil {
 		return WithLog(err)
 	}
-
+	log.Println(string(b))
 	return s.Conn.Publish(subject, b)
 }
 
-func encode[T any](tt T) ([]byte, error) {
-	b := bytes.Buffer{}
-	err := gob.NewEncoder(&b).Encode(tt)
-	if err != nil {
-		return nil, err
-	}
-
-	return b.Bytes(), nil
+func encodeJson(msg Message) ([]byte, error) {
+	return json.MarshalIndent(msg, "", "\t")
 }
