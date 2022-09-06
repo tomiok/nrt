@@ -4,40 +4,47 @@ import (
 	"github.com/nats-io/nats.go"
 	"log"
 	"monitor/cmd/internal/monitor"
+	"net/http"
 )
 
 func main() {
-	if err := run(); err != nil {
+	d, err := deps()
+	if err != nil {
 		log.Fatal(err)
 	}
+
+	server := http.Server{
+		Addr: ":3335",
+	}
+
+	http.HandleFunc("/listen", d.sse.EventHandler)
+	go d.m.ReadForever()
+
+	log.Fatal(server.ListenAndServe())
 }
 
-type dependenciess struct {
-	monitor monitor.Monitor
+type dependencies struct {
+	sse SSE
+	m   *monitor.Monitor
 }
 
-func deps() {
-
-}
-
-func run() error {
+func deps() (*dependencies, error) {
 	nc, err := nats.Connect(nats.DefaultURL)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	m := monitor.Monitor{
-		Conn: nc,
+	ch := make(chan []byte)
+	m := monitor.NewMonitor(nc)
+
+	go m.Listen(ch)
+	sse := SSE{
+		WebCh: ch,
 	}
 
-	for {
-		err := m.Read()
-
-		if err != nil {
-			break
-		}
-	}
-
-	return nil
+	return &dependencies{
+		sse: sse,
+		m:   m,
+	}, nil
 }
