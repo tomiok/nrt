@@ -1,6 +1,7 @@
 package monitor
 
 import (
+	"encoding/json"
 	"github.com/nats-io/nats.go"
 	"log"
 )
@@ -19,12 +20,17 @@ func NewMonitor(conn *nats.Conn) *Monitor {
 	return m
 }
 
-func (m *Monitor) Listen(webCh chan []byte) {
+func (m *Monitor) Listen(webCh chan Message) {
 	for {
 		select {
 		case msg := <-m.Broker:
-			log.Println("message")
-			webCh <- msg
+			var res Message
+			err := json.Unmarshal(msg, &res)
+			if err != nil {
+				log.Println(err)
+			}
+
+			webCh <- res
 		}
 	}
 }

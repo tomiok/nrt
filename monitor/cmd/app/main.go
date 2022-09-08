@@ -35,7 +35,7 @@ func deps() (*dependencies, error) {
 		return nil, err
 	}
 
-	ch := make(chan []byte)
+	ch := make(chan monitor.Message)
 	m := monitor.NewMonitor(nc)
 
 	go m.Listen(ch)
