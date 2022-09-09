@@ -8,10 +8,10 @@ import (
 )
 
 type SSE struct {
-	WebCh chan monitor.Message
+	MessageCh chan monitor.Message
 }
 
-func (s *SSE) EventHandler(w http.ResponseWriter, r *http.Request) {
+func (s *SSE) EventHandler(w http.ResponseWriter, _ *http.Request) {
 	flusher, ok := w.(http.Flusher)
 
 	if !ok {
@@ -33,7 +33,7 @@ func (s *SSE) EventHandler(w http.ResponseWriter, r *http.Request) {
 				position,
 				scannedAt,
 			)
-		}(<-s.WebCh))
+		}(<-s.MessageCh))
 		if err != nil {
 			log.Println(err)
 		}

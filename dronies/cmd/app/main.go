@@ -10,7 +10,7 @@ import (
 func main() {
 	now := time.Now()
 
-	deps, err := Deps()
+	deps, err := buildDeps()
 
 	if err != nil {
 		log.Fatal(err)
@@ -21,7 +21,7 @@ func main() {
 	log.Println(time.Since(now))
 }
 
-func Deps() (*deps, error) {
+func buildDeps() (*deps, error) {
 	nc, err := nats.Connect(nats.DefaultURL)
 
 	if err != nil {

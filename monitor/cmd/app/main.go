@@ -40,7 +40,7 @@ func deps() (*dependencies, error) {
 
 	go m.Listen(ch)
 	sse := SSE{
-		WebCh: ch,
+		MessageCh: ch,
 	}
 
 	return &dependencies{
