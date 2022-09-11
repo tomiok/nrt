@@ -6,20 +6,20 @@ Using Golang and nats to provide SSE
 
 ### Run local
 
-run nats
+Run nats
 ```bash
 docker-compose up
 ```
 
-run dronies
+Run dronies
 ```bash
 go run dronies/cmd/app/*.go
 ```
 
-run monitor
+Run monitor
 ```bash
 go run monitor/cmd/app/*.go
 ```
 
-### test in browser
+### Test in browser
 go to: localhost:3335/listen
