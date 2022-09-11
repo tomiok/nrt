@@ -49,4 +49,5 @@ func setHeaders(w http.ResponseWriter) {
 	w.Header().Set("Connection", "keep-alive")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	//w.Header().Set("Transfer-Encoding", "chunked")
+	//w.Header().Set("Content-Type", "application/x-ndjson")
 }

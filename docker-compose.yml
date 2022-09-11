@@ -5,5 +5,5 @@ services:
     image: nats
     restart: always
     ports:
-      - "8222:8222"
-      - "4222:4222"
+      - "8222:8222" # web interface port
+      - "4222:4222" # broker port
