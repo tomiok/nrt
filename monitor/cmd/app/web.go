@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"monitor/cmd/internal/monitor"
+	"monitor/internal/monitor"
 	"net/http"
 )
 
@@ -15,7 +15,7 @@ func (s *SSE) EventHandler(w http.ResponseWriter, _ *http.Request) {
 	flusher, ok := w.(http.Flusher)
 
 	if !ok {
-		http.Error(w, "Streaming unsupported!", http.StatusInternalServerError)
+		http.Error(w, "streaming unsupported!", http.StatusInternalServerError)
 		return
 	}
 	setHeaders(w)

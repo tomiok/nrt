@@ -1,7 +1,7 @@
 package main
 
 import (
-	"dronies/cmd/internal/drone"
+	drone2 "dronies/internal/drone"
 	"github.com/nats-io/nats.go"
 	"log"
 	"time"
@@ -28,11 +28,11 @@ func buildDeps() (*deps, error) {
 		return nil, err
 	}
 
-	sender := drone.Sender{
+	sender := drone2.Sender{
 		Conn: nc,
 	}
 
-	exec := drone.Executor{
+	exec := drone2.Executor{
 		Sender: &sender,
 	}
 
@@ -42,5 +42,5 @@ func buildDeps() (*deps, error) {
 }
 
 type deps struct {
-	Exec *drone.Executor
+	Exec *drone2.Executor
 }

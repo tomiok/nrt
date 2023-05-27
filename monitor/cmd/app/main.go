@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/nats-io/nats.go"
 	"log"
-	"monitor/cmd/internal/monitor"
+	monitor "monitor/internal/monitor"
 	"net/http"
 )
 

@@ -40,15 +40,14 @@ func (m *Monitor) ReadForever() {
 		err := m.Read()
 
 		if err != nil {
-			log.Println(err)
 			break
 		}
 	}
 }
 
 func (m *Monitor) Read() error {
-	s, err := m.Conn.Subscribe("enemies_1", func(msg *nats.Msg) {
-		log.Println("message read")
+	s, err := m.Conn.Subscribe("enemies", func(msg *nats.Msg) {
+		log.Println("enemies report received")
 		m.Broker <- msg.Data
 	})
 
