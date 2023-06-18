@@ -44,10 +44,8 @@ func (s *SSE) EventHandler(w http.ResponseWriter, _ *http.Request) {
 
 func setHeaders(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "text/event-stream")
-	//w.Header().Set("Content-Type", "application/x-ndjson")
 	w.Header().Set("Cache-Control", "no-cache")
-	w.Header().Set("Connection", "keep-alive")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	//w.Header().Set("Transfer-Encoding", "chunked")
-	//w.Header().Set("Content-Type", "application/x-ndjson")
+	w.Header().Set("Transfer-Encoding", "chunked")
+
 }
